@@ -1,8 +1,8 @@
 from enum import Enum
-
+from htmlnode import LeafNode
 
 class TextType(Enum):
-    PLAIN = 1
+    TEXT = 1
     BOLD = 2
     ITALIC = 3
     CODE = 4
@@ -10,7 +10,7 @@ class TextType(Enum):
     IMAGE = 6
 
 class TextNode:
-    def __init__(self, text: str, text_type: TextType = TextType.PLAIN, url = None):
+    def __init__(self, text: str, text_type: TextType = TextType.TEXT, url = None):
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -22,3 +22,22 @@ class TextNode:
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+
+def text_node_to_html_node(text_node: TextNode) -> LeafNode:
+    if text_node.text_type == TextType.TEXT:
+        return LeafNode(None, text_node.text)
+
+    if text_node.text_type == TextType.BOLD:
+        return LeafNode("b", text_node.text)
+
+    if text_node.text_type == TextType.ITALIC:
+        return LeafNode("i", text_node.text)
+
+    if text_node.text_type == TextType.CODE:
+        return LeafNode("code", text_node.text)
+
+    if text_node.text_type == TextType.LINK:
+        return LeafNode("a", text_node.text, f"href={text_node.url}")
+
+    if text_node.text_type == TextType.IMAGE:
+        return LeafNode("img", "", f"src={text_node.url} alt={text_node.text}")

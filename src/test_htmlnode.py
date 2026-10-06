@@ -60,4 +60,4 @@ class TestParentNode(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             parent_node.to_html()
-    
+
